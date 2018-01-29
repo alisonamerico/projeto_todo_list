@@ -1,27 +1,58 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views import generic
-
 from django.views.generic import TemplateView
 from . models import Todo
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+from .forms import TodoForm
 
 
 class HomePageView(TemplateView):
-    model = Todo
+    modelo = Todo
     template_name = 'home.html'
 
 
 class TodoListPageView(TemplateView):
-    model = Todo
     template_name = 'todo_list.html'
+    # def todo_list(request):
+    #     itens = Todo.objects.all()
+    #     return render(request, 'todo_list.html', {'itens': itens})
 
 
-class LoginPageView(TemplateView):
-    model = Todo
-    template_name = 'login.html'
+def home(request):
+    todo_list = Todo.objects.order_by('id')
+
+    form = TodoForm()
+
+    context = {'todo_list': todo_list, 'form': form}
+
+    return render(request, 'todo_list.html', context)
 
 
-class SignUpView(generic.CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'signup.html'
+@require_POST
+def addTodo(request):
+    form = TodoForm(request.POST)
+
+    if form.is_valid():
+        new_todo = Todo(text=request.POST['text'])
+        new_todo.save()
+
+    return redirect('todo_list')
+
+
+def completeTodo(request, todo_id):
+    todo = Todo.objects.get(pk=todo_id)
+    todo.complete = True
+    todo.save()
+
+    return redirect('todo_list')
+
+
+def deleteCompleted(request):
+    Todo.objects.filter(complete__exact=True).delete()
+
+    return redirect('todo_list')
+
+
+def deleteAll(request):
+    Todo.objects.all().delete()
+
+    return redirect('todo_list')

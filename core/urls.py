@@ -4,8 +4,9 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.HomePageView.as_view(), name='home'),
     path('todo_list/', views.TodoListPageView.as_view(), name='todo_list'),
-    path('signup/', views.SignUpView.as_view(), name='signup'),
-    path('registration/login/', views.LoginPageView.as_view(), name='login'),
+    path('add', views.addTodo, name='add'),
+    path('complete/<todo_id>', views.completeTodo, name='complete'),
+    path('deletecomplete', views.deleteCompleted, name='deletecomplete'),
+    path('deleteall', views.deleteAll, name='deleteall')
 ]
