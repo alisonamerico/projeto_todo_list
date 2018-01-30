@@ -13,7 +13,7 @@ $ git clone https://github.com/alisonamerico/projeto_todo_list.git
 2. Crie um ambiente virtualizado com [virtualenv]() e ative-o:
 
 ```bash
-$ cd python-scrapy-olx
+$ cd projeto_todo_list
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 ```
