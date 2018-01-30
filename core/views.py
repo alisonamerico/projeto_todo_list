@@ -1,58 +1,34 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from . models import Todo
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
-from .forms import TodoForm
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
 class HomePageView(TemplateView):
-    modelo = Todo
+    model = Todo
     template_name = 'home.html'
 
 
-class TodoListPageView(TemplateView):
-    template_name = 'todo_list.html'
-    # def todo_list(request):
-    #     itens = Todo.objects.all()
-    #     return render(request, 'todo_list.html', {'itens': itens})
+class TodoList(ListView):
+    model = Todo
+    template_name = 'todo/todo_list.html'
 
 
-def home(request):
-    todo_list = Todo.objects.order_by('id')
-
-    form = TodoForm()
-
-    context = {'todo_list': todo_list, 'form': form}
-
-    return render(request, 'todo_list.html', context)
+class TodoCreate(CreateView):
+    model = Todo
+    template_name = 'todo/todo_form.html'
+    success_url = reverse_lazy('todo_list')
+    fields = ['title', 'text']
 
 
-@require_POST
-def addTodo(request):
-    form = TodoForm(request.POST)
-
-    if form.is_valid():
-        new_todo = Todo(text=request.POST['text'])
-        new_todo.save()
-
-    return redirect('todo_list')
+class TodoUpdate(UpdateView):
+    model = Todo
+    template_name = 'todo/todo_form.html'
+    success_url = reverse_lazy('todo_list')
+    fields = ['title', 'text']
 
 
-def completeTodo(request, todo_id):
-    todo = Todo.objects.get(pk=todo_id)
-    todo.complete = True
-    todo.save()
-
-    return redirect('todo_list')
-
-
-def deleteCompleted(request):
-    Todo.objects.filter(complete__exact=True).delete()
-
-    return redirect('todo_list')
-
-
-def deleteAll(request):
-    Todo.objects.all().delete()
-
-    return redirect('todo_list')
+class TodoDelete(DeleteView):
+    model = Todo
+    template_name = 'todo/todo_confirm_delete.html'
+    success_url = reverse_lazy('todo_list')
