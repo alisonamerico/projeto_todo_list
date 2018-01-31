@@ -1,37 +1,90 @@
 {% extends 'base.html' %}
-
 {% load bootstrap3 %}
 
 {% block content %}
-  <h1 class="page-header">Todo</h1>
-  <table class="table" id="todo-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Text</th>
-        <th>created_at</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for todo in todo_list %}
-        <tr>
-          <td>{{ todo.id }}</td>
-          <td>{{ todo.title }}</td>
-          <td>{{ todo.text }}</td>
-          <td>{{ todo.created_at }}</td>
-        </tr>
-        <li>
-          <a href="{% url "todo_edit" todo.id %}" class="btn btn-warning">Edit</a>
-          <a href="{% url "todo_delete" todo.id %}" class="btn btn-danger">Delete</a>
-        </li>
 
-      {% empty %}
-        <tr>
-          <td colspan="7" class="text-center bg-warning">No Item</td>
-        </tr>
-      {% endfor %}
-      <a href="{% url "todo_new" %}"class="btn btn-primary">New</a>
-    </tbody>
-  </table>
+    <div class="row">
+        <div class="col-md-12">
+
+            <h1>Itens</h1>
+            <hr>
+
+            {% include 'partials/add_button.html' with link='todo_add' %}
+
+
+            {% if page_objects %}
+
+                <!-- search form -->
+                <form class="navbar-form navbar-right" action="." method="get">
+
+                    <input id="search_box" name="search_box" type="text" placeholder="Pesquisar pelo nome"
+                           class="form-control">
+
+                    <button type="submit" class="btn btn-primary form-control">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+
+                    {% if result %}
+                        <a class="btn btn-primary btn-success" href="{% url 'todo_list' %}" role="button">
+                            <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Resetar"></span>
+                        </a>
+                    {% endif %}
+
+                </form>
+
+                {% if result %}
+                    <h3 class="text-success">Resultado da busca: {{ result }} registro(s) com o nome
+                        <strong>{{ selection }}</strong></h3>
+                {% endif %}
+
+                </div><!-- col-md-12 -->
+
+                <div class="col-md-12 TbMargin">
+
+                {% bootstrap_messages %}
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Texto</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for todo in page_objects %}
+
+                        <tr>
+                            <th>{{ todo.pk }}</th>
+                            <td>{{ todo.text }}</td>
+                            <td>
+                                {% include 'partials/actions.html' with pk=todo.pk edit='todo:edit' delete='todo:delete' %}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+            {% else %}
+
+                <h3>Sem registros...</h3>
+
+            {% endif %}
+
+            <!-- pagination -->
+            {% include 'partials/paginator.html' %}
+
+            </div><!-- col-md-12 -->
+    </div><!-- row -->
+
+{% endblock content %}
+
+{% block extras_js %}
+    <script type="text/javascript">
+        $(".alert").show().delay(3000).fadeOut();
+    </script>
 {% endblock %}

@@ -18,17 +18,17 @@ class TodoCreate(CreateView):
     model = Todo
     template_name = 'todo/todo_form.html'
     success_url = reverse_lazy('todo_list')
-    fields = ['title', 'text']
+    fields = ['title']
 
 
 class TodoUpdate(UpdateView):
     model = Todo
     template_name = 'todo/todo_form.html'
     success_url = reverse_lazy('todo_list')
-    fields = ['title', 'text']
+    fields = ['title']
 
 
 class TodoDelete(DeleteView):
     model = Todo
-    template_name = 'todo/todo_confirm_delete.html'
+    template_name = 'todo/todo_delete.html'
     success_url = reverse_lazy('todo_list')
