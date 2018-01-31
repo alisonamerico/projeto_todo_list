@@ -30,13 +30,19 @@ $ source .venv/bin/activate
 (.venv)$ pip install -r requirements.txt
 ```
 
-5. Antes executar a aplicação, precisa criar o banco de dados localmente:
+5. Configure a instância com o .env:
+
+```bash
+(.venv)$ cp contrib/env-sample .env
+```
+
+6. Antes executar a aplicação, precisa criar o banco de dados localmente:
 
 ```bash
 (.venv)$ ./manage.py migrate
 ```
 
-6. Execute o servidor web local:
+7. Execute o servidor web local:
 
 ```bash
 (.venv)$ ./manage.py runserver
