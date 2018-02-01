@@ -8,29 +8,25 @@
 
             <h1>Itens</h1>
             <hr>
-
             {% include 'partials/add_button.html' with link='todo_add' %}
 
+                      <!-- search form -->
+              <form class="navbar-form navbar-right" '.' method="get">
 
-            {% if page_objects %}
+                  <input id="search_box" name="search_box" type="text" placeholder="Pesquisar pelo nome"
+                         class="form-control">
 
-                <!-- search form -->
-                <form class="navbar-form navbar-right" action="." method="get">
+                  <button type="submit" class="btn btn-primary form-control">
+                      <span class="glyphicon glyphicon-search"></span>
+                  </button>
 
-                    <input id="search_box" name="search_box" type="text" placeholder="Pesquisar pelo nome"
-                           class="form-control">
+                  {% if result %}
+                      <a class="btn btn-primary btn-success" href="{% url 'todo_list' %}" role="button">
+                          <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Resetar"></span>
+                      </a>
+                  {% endif %}
 
-                    <button type="submit" class="btn btn-primary form-control">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-
-                    {% if result %}
-                        <a class="btn btn-primary btn-success" href="{% url 'todo_list' %}" role="button">
-                            <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Resetar"></span>
-                        </a>
-                    {% endif %}
-
-                </form>
+              </form>
 
                 {% if result %}
                     <h3 class="text-success">Resultado da busca: {{ result }} registro(s) com o nome
@@ -41,47 +37,54 @@
 
                 <div class="col-md-12 TbMargin">
 
-                {% bootstrap_messages %}
 
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Texto</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            {% bootstrap_messages %}
 
-                    {% for todo in page_objects %}
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Atividade</th>
+                      <th>Data criada</th>
+                      <th>Prioridade</th>
+                      <th>Completado</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-                        <tr>
-                            <th>{{ todo.pk }}</th>
-                            <td>{{ todo.text }}</td>
-                            <td>
-                                {% include 'partials/actions.html' with pk=todo.pk edit='todo:edit' delete='todo:delete' %}
-                            </td>
+                {% for todo in object_list %}
+                  <tr>
+                      <td>{{ todo.id }}</td>
+                      <td>{{ todo.title }}</td>
+                      <td>{{ todo.created_date }}</td>
+                      <td>{{ todo.priority }}</td>
+                      <td>{{ todo.completed }}</td>
+                      <td>
+                        {% if request.user.is_authenticated %}
+                          <a href="{% url 'todo_edit' todo.id %}" class="btn btn-primary btn-sm" role="button">
+                              <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar"></span>
+                          </a>
+                          <a href="{% url 'todo_delete' todo.id %}" class="btn btn-primary btn-sm" role="button">
+                              <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Deletar"></span>
+                          </a>
+                        {% endif %}
+                      </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="7" class="text-center bg-warning">Sem registros...</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-                        </tr>
-
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-
-
-            {% else %}
-
-                <h3>Sem registros...</h3>
-
-            {% endif %}
-
-            <!-- pagination -->
-            {% include 'partials/paginator.html' %}
+              <!-- pagination -->
+              {% include 'partials/paginator.html' %}
 
             </div><!-- col-md-12 -->
     </div><!-- row -->
 
-{% endblock content %}
+{% endblock %}
 
 {% block extras_js %}
     <script type="text/javascript">

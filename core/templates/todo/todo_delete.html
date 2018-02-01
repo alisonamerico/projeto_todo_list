@@ -1,13 +1,40 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
+{% load bootstrap3 %}
 
 {% block content %}
 
-<form method="post">
-  {% csrf_token %}
-    Are you sure you want to delete "{{ object }}" ?
-    <input type="submit" value="Delete" />
-    <a href="{% url "todo_list" %}">Cancel</a>
-</form>
+    <div class="row">
+        <div class="col-md-12">
 
-{% endblock %}
+            <h1>Deletar Item</h1>
+            <hr>
+
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                Cuidado! Esta ação eliminará este registro do sistema.
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <p>Tem certeza que você quer deletar o item <strong>{{ todo.title }}</strong> ?</p>
+                {% buttons %}
+                    <button type="submit" class="btn btn-warning">Deletar</button>
+                {% endbuttons %}
+            </form>
+
+            <hr>
+
+            <a href="{% url 'todo_list' %}" class="btn btn-primary btn-sm" role="button">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" title="Voltar"></span>
+            </a>
+            <a href="{% url 'todo_edit' todo.id %}" class="btn btn-primary btn-sm" role="button">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar"></span>
+            </a>
+
+        </div><!-- col-md-12 -->
+
+    </div><!-- row -->
+
+{% endblock content %}
