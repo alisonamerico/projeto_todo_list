@@ -2,17 +2,17 @@ from django.db import models
 import datetime
 
 
-PRIORITY_CHOICES = (
-  (1, 'Low'),
-  (2, 'Normal'),
-  (3, 'High'),
-)
-
-
 class Todo(models.Model):
+
+    PRIORITY_CHOICES = (
+      ('Baixa', 'Baixa'),
+      ('Normal', 'Normal'),
+      ('Alta', 'Alta'),
+    )
+
     title = models.CharField(max_length=250, unique=True)
     created_date = models.DateTimeField(default=datetime.datetime.now)
-    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
+    priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES, default='Normal')
     completed = models.BooleanField(default=False)
 
     def __str__(self):
