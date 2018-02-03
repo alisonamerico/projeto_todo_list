@@ -4,9 +4,6 @@ from .models import Todo
 
 
 class TodoForms(forms.ModelForm):
-    BAIXA = 1
-    NORMAL = 2
-    ALTA = 3
 
     PRIORITY_CHOICES = [
       ('BAIXA', 'Baixa'),
