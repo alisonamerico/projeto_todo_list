@@ -20,8 +20,3 @@ class Todo(models.Model):
 
     class Meta:
         ordering = ['-priority', 'title']
-        verbose_name = 'Todo'
-        verbose_name_plural = 'Todos'
-
-    class Admin:
-        pass

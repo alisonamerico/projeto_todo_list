@@ -10,84 +10,68 @@
             <hr>
             {% include 'partials/add_button.html' with link='todo_add' %}
 
-                      <!-- search form -->
-              <form class="navbar-form navbar-right" '.' method="get">
-
-                  <input id="search_box" name="search_box" type="text" placeholder="Pesquisar pelo nome"
-                         class="form-control">
-
-                  <button type="submit" class="btn btn-primary form-control">
-                      <span class="glyphicon glyphicon-search"></span>
-                  </button>
-
-                  {% if result %}
-                      <a class="btn btn-primary btn-success" href="{% url 'todo_list' %}" role="button">
-                          <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Resetar"></span>
-                      </a>
-                  {% endif %}
-
-              </form>
-
-                {% if result %}
-                    <h3 class="text-success">Resultado da busca: {{ result }} registro(s) com o nome
-                        <strong>{{ selection }}</strong></h3>
-                {% endif %}
-
-                </div><!-- col-md-12 -->
-
-                <div class="col-md-12 TbMargin">
-
-
             {% bootstrap_messages %}
-
-            <table class="table table-hover">
+            <table id="todo" class="table table-hover" width="100%" cellspacing="0">
                 <thead>
-                  <tr>
-                      <th>#</th>
-                      <th>Atividade</th>
-                      <th>Data criada</th>
-                      <th>Prioridade</th>
-                      <th>Completado</th>
-                  </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Atividade</th>
+                        <th>Data criada</th>
+                        <th>Prioridade</th>
+                        <th>Completado</th>
+                    </tr>
                 </thead>
                 <tbody>
-
-                {% for todo in object_list %}
                   <tr>
-                      <td>{{ todo.id }}</td>
-                      {% if todo.completed %}
-                      <td><s>{{ todo.title }}</s></td>
-                      {% else %}
-                      <td>{{ todo.title }}</td>
-                      {% endif %}
-                      <td>{{ todo.created_date }}</td>
-                      <td><select class="selectpicker"><option>{{ todo.priority }}</option></select></td>
-                      {% if todo.completed %}
-                          <td><input type="checkbox" checked></td>
-                      {% else %}
-                          <td><input type="checkbox">{{ todo.completed }}</td>
-                      {% endif %}
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.title }}</td>
+                    <td>{{ todo.created_date }}</td>
+                    <td>{{ todo.priority }}</td>
+                    <td>{{ todo.completed }}</td>
 
-                      <td>
-                        {% if request.user.is_authenticated %}
-                          <a href="{% url 'todo_edit' todo.id %}" class="btn btn-primary btn-sm" role="button">
-                              <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar"></span>
-                          </a>
-                          <a href="{% url 'todo_delete' todo.id %}" class="btn btn-primary btn-sm" role="button">
-                              <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Deletar"></span>
-                          </a>
+                  {% for todo in object_list %}
+                    <tr>
+                        <td>{{ todo.id }}</td>
+                        {% if todo.completed %}
+                        <td><s>{{ todo.title }}</s></td>
+                        {% else %}
+                        <td>{{ todo.title }}</td>
                         {% endif %}
-                      </td>
-                  </tr>
-                  {% empty %}
-                  <tr>
-                    <td colspan="7" class="text-center bg-warning">Sem registros...</td>
-                  </tr>
-                {% endfor %}
+                        <td>{{ todo.created_date }}</td>
+                        <td>
+                          <select>
+                              <option>Baixa</option>
+                              <option>Normal</option>
+                              <option>Alta</option>
+                          </select>
+                        </td>
+
+                        {% if todo.completed %}
+                          <td><input type="checkbox"  name="completed" checked></td>
+
+                        {% else %}
+                          <td><input type="checkbox" name="completed">{{ todo.completed }}</td>
+                        {% endif %}
+
+                        <td>
+                          {% if request.user.is_authenticated %}
+                            <a href="{% url 'todo_edit' todo.id %}" class="btn btn-primary btn-sm" role="button">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar"></span>
+                            </a>
+                            <a href="{% url 'todo_delete' todo.id %}" class="btn btn-primary btn-sm" role="button">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Deletar"></span>
+                            </a>
+                          {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="7" class="text-center bg-warning">Sem registros...</td>
+                    </tr>
+                  {% endfor %}
                 </tbody>
             </table>
-
-            </div><!-- col-md-12 -->
+          </div><!-- col-md-12 -->
     </div><!-- row -->
 
 {% endblock %}

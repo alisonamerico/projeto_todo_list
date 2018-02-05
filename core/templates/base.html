@@ -58,7 +58,26 @@
 
 <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'libs/jquery/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/jquery/jquery-1.12.4.j'%}"></script>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#todo').DataTable( {
+          columnDefs: [ {
+              targets: [ 0 ],
+              orderData: [ 0, 1 ]
+          }, {
+              targets: [ 1 ],
+              orderData: [ 1, 0 ]
+          }, {
+              targets: [ 4 ],
+              orderData: [ 4, 0 ]
+          } ]
+      } );
+  } );
+
+</script>
 
 {% block extras_js %}
 
