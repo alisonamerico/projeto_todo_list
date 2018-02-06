@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'bootstrap3',
     'accounts',
+    'coverage',
 ]
 
 MIDDLEWARE = [
