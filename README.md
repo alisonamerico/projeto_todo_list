@@ -48,7 +48,10 @@ $ source .venv/bin/activate
 (.venv)$ ./manage.py runserver
 ```
 
-Obs.: Projeto está em desenvolvimento. ;)
+8. Execute os testes:
+
+```bash
+(.venv)$ ./manage.py test
 
 ## Dúvidas ou problemas
 
