@@ -12,7 +12,7 @@ class Todo(models.Model):
 
     title = models.CharField(max_length=250)
     created_date = models.DateTimeField(default=datetime.datetime.now)
-    deadline = models.DateField(default=datetime.datetime.now)
+    deadline = models.DateTimeField(default=datetime.datetime.now)
     priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES, default='Normal')
     completed = models.BooleanField(default=False)
 
