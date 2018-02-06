@@ -11,3 +11,4 @@ class TodoForm(forms.Form):
 
     priority = forms.CharField(max_length=6, choices=PRIORITY_CHOICES, default='Normal')
     completed = forms.BooleanField(required=False)
+    deadline = forms.DateInput({'class': 'datepicker'})
